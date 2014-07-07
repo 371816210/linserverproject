@@ -26,8 +26,10 @@ import com.inhuasoft.smart.server.tutorials.TutorialLauncherActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.widget.ImageView;
 
 /**
  * 
@@ -54,8 +56,11 @@ public class LinphoneLauncherActivity extends Activity {
         } else {
         	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
-		setContentView(R.layout.launcher);
+		setContentView(R.layout.loadsplash);
         
+		ImageView imageView = (ImageView)findViewById(R.id.anim);
+		final AnimationDrawable anima = (AnimationDrawable)imageView.getDrawable();
+		anima.start();
 		mHandler = new Handler();
 		
 		if (LinphoneService.isReady()) {
@@ -80,8 +85,8 @@ public class LinphoneLauncherActivity extends Activity {
 		mHandler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				startActivity(new Intent().setClass(LinphoneLauncherActivity.this, classToStart).setData(getIntent().getData()));
-				finish();
+				//startActivity(new Intent().setClass(LinphoneLauncherActivity.this, classToStart).setData(getIntent().getData()));
+				//finish();
 			}
 		}, 1000);
 	}
