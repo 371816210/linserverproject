@@ -64,7 +64,7 @@
 		
 	</LinearLayout>
 
-    <org.linphone.ui.LinphoneSliders
+    <com.inhuasoft.smart.server.ui.LinphoneSliders
         android:id="@+id/sliding_widget"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
