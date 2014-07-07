@@ -451,4 +451,9 @@
 	<string name="unread_messages">%i unread messages</string>
 	
 	<string name="retry">Retry</string>
+	<string name="hint_username">UserName</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_checkpassword">Password Again</string>
+    <string name="hint_lawcopyright">Read and agree to the terms of the privacy policy</string>
+    <string name="string_btn_reg">Sign   Up</string>
 </resources>
