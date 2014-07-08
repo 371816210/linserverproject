@@ -81,6 +81,8 @@ public class IncomingCallActivity extends Activity implements LinphoneOnCallStat
 
         super.onCreate(savedInstanceState);
 		instance = this;
+		
+		
 	}
 
 	@Override
@@ -116,6 +118,8 @@ public class IncomingCallActivity extends Activity implements LinphoneOnCallStat
 		} else {
 			mNumberView.setText(address.asStringUriOnly());
 		}
+		
+		onLeftHandleTriggered();
 	}
 	
 	@Override
@@ -167,14 +171,14 @@ public class IncomingCallActivity extends Activity implements LinphoneOnCallStat
 			// the above method takes care of Samsung Galaxy S
 			Toast.makeText(this, R.string.couldnt_accept_call, Toast.LENGTH_LONG).show();
 		} else {
-			if (!LinphoneActivity.isInstanciated()) {
+			if (!MainActivity.isInstanciated()) {
 				return;
 			}
 			final LinphoneCallParams remoteParams = mCall.getRemoteParams();
 			if (remoteParams != null && remoteParams.getVideoEnabled() && LinphonePreferences.instance().shouldAutomaticallyAcceptVideoRequests()) {
-				LinphoneActivity.instance().startVideoActivity(mCall);
+				MainActivity.instance().startVideoActivity(mCall);
 			} else {
-				LinphoneActivity.instance().startIncallActivity(mCall);
+				MainActivity.instance().startIncallActivity(mCall);
 			}
 		}
 	}
