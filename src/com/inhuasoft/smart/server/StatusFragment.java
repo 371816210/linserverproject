@@ -121,7 +121,7 @@ public class StatusFragment extends Fragment {
 			((LinphoneActivity) activity).updateStatusFragment(this);
 			isInCall = false;
 		} else if (activity instanceof InCallActivity) {
-			((InCallActivity) activity).updateStatusFragment(this);
+			//((InCallActivity) activity).updateStatusFragment(this);
 			isInCall = true;
 		}
 	}
