@@ -52,6 +52,8 @@ import org.w3c.dom.NodeList;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
+import com.inhuasoft.smart.server.setup.SetupActivity;
+
 import android.R.integer;
 import android.app.Activity;
 import android.app.ActivityGroup;
@@ -150,10 +152,14 @@ public class LoginActivity extends Activity implements OnClickListener {
 				Log.e(TAG, "Failed to Commit() configuration");
 			}
 		 */
+		 LinphonePreferences.instance().CreatedAccount(getDeviceNo(),getDeviceNo(),"115.28.9.71");
 		 
 	}
 	 
 	 private void  StartMain() {
+		 SetSystemInfo();
+		 startActivity(new Intent().setClass(LoginActivity.this, LinphoneActivity.class));
+		 finish();
 		/* if(mScreenService != null )
 		 {
 			 try {
@@ -384,7 +390,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 				thread_bind_user_device.start();
 				break;
 			case Bind_User_Device_Success:
-				SetSystemInfo();
+				//SetSystemInfo();
 				StartMain();
 				break;
 			case Bind_User_Device_Fail:
@@ -442,10 +448,12 @@ public class LoginActivity extends Activity implements OnClickListener {
 				thread_user_login.start();
 				break;
 			case User_Login_Success:
+				LinphonePreferences.instance().setLogin(true);
 				/*mConfigurationService.putBoolean(NgnConfigurationEntry.DEVICE_LOGIN, true);
 				 if(!mConfigurationService.commit()){
 						Log.e(TAG, "Failed to Commit() configuration");
 					} */
+				 
 				StartMain();
 				break;
 			case User_Login_Fail:
@@ -1136,7 +1144,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 				DocumentBuilder builder = factory.newDocumentBuilder();
 				Document dom = builder.parse(input);
 				String returncode = getValByTagName(dom,
-						"GetUserByDeviceResult");// ������
+						"GetUserByDeviceResult");
 				System.out
 						.println("======GetUserByDeviceResult======== return code is  "
 								+ returncode);
@@ -1148,6 +1156,18 @@ public class LoginActivity extends Activity implements OnClickListener {
 				} else {
 					String username = ParserXml(returncode, "UserName");
 					if (username != null) {
+						LinphonePreferences.instance().setReg(true);
+						LinphonePreferences.instance().setUserSip("sip:"+username+"@115.28.9.71");
+						if(!LinphonePreferences.instance().isLogin())
+						{
+							//SetLoginUI();
+							Message message = mHandler.obtainMessage(Show_Login_UI);
+							message.sendToTarget();
+						}
+						else {
+							Message message = mHandler.obtainMessage(StartMain);
+							message.sendToTarget();
+						}
 						/*mConfigurationService.putBoolean(NgnConfigurationEntry.DEVICE_REG, true);
 						mConfigurationService.putString(NgnConfigurationEntry.USERNAME, editUserName.getText().toString());
 						mConfigurationService.putString(NgnConfigurationEntry.USER_PASSWORD, editPassword.getText().toString());
@@ -1304,6 +1324,14 @@ public class LoginActivity extends Activity implements OnClickListener {
 		editRePassword = (EditText) findViewById(R.id.edit_checkpassword);
 		txtMsginfo = (TextView)findViewById(R.id.txt_msginfo);
         chkMsginfo =(CheckBox)findViewById(R.id.chk_msginfo);
+        if (!LinphonePreferences.instance().isReg()) {
+        	Message message = mHandler.obtainMessage(GetUserByDevice_Action);
+			message.sendToTarget();
+		}
+        else if ( LinphonePreferences.instance().isReg()&& ! LinphonePreferences.instance().isLogin()) {
+        	Message message = mHandler.obtainMessage(Show_Login_UI);
+			message.sendToTarget();
+		}
         
     	/*if (!mConfigurationService.getBoolean(NgnConfigurationEntry.DEVICE_REG,
 				NgnConfigurationEntry.DEFAULT_DEVICE_REG)) {
@@ -1435,6 +1463,22 @@ public class LoginActivity extends Activity implements OnClickListener {
 	public void onClick(View arg0) {
 		// TODO Auto-generated method stub
 		if (arg0.getId() == R.id.btnsubmit) {
+			
+			if(!LinphonePreferences.instance().isReg())
+			{
+				if (ValidateRegInput()) {
+					Message message = mHandler.obtainMessage(Admin_Login_Action);
+					message.sendToTarget();
+				}
+			}
+			else if (LinphonePreferences.instance().isReg() && !LinphonePreferences.instance().isLogin())
+			{
+				if (ValidateLoginInput()) {
+					Message message = mHandler.obtainMessage(User_Login_Action);
+					message.sendToTarget();
+				}
+			}
+			
 			
 		/*	if (!mConfigurationService.getBoolean(NgnConfigurationEntry.DEVICE_REG,
 					NgnConfigurationEntry.DEFAULT_DEVICE_REG)) {

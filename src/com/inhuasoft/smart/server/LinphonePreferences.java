@@ -33,7 +33,9 @@ import org.linphone.core.LinphoneProxyConfig;
 import org.linphone.core.LpConfig;
 import org.linphone.mediastream.Log;
 
+import android.R.bool;
 import android.content.Context;
+import android.text.TextUtils;
 
 /**
  * @author Sylvain Berfini
@@ -93,6 +95,32 @@ public class LinphonePreferences {
 			ringtone = defaultRingtone;
 		return ringtone;
 	}
+	
+	//zwzhu add begin 
+	public boolean isReg() {
+		return getConfig().getBool("app", "reg",false);
+	}
+	
+	public void setReg(boolean reg){
+		getConfig().setBool("app", "reg",reg );
+	}
+	
+	public boolean isLogin() {
+	     return getConfig().getBool("app", "login", false);
+	}
+	
+	public void setLogin(boolean login) {
+         getConfig().setBool("app", "login", login);		
+	}
+	
+	public String getUserSip() {
+		 return getConfig().getString("app", "usersip", "");
+	}
+	
+	public void setUserSip(String usersip) {
+		 getConfig().setString("app", "usersip", usersip);
+	}
+	//zwzhu add end 
 	
 	public void setRingtone(String ringtonePath) {
 		getConfig().setString("app", "ringtone", ringtonePath);
@@ -290,6 +318,22 @@ public class LinphonePreferences {
 				lc.setDefaultProxyConfig(prxCfg);
 		}
 	}
+	
+	
+	public void CreatedAccount(String username, String password, String domain) {
+		
+		AccountBuilder builder = new AccountBuilder(LinphoneManager.getLc())
+		.setUsername(username)
+		.setDomain(domain)
+		.setPassword(password);
+		
+		try {
+			builder.saveNewAccount();
+		} catch (LinphoneCoreException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	
 	public void setAccountTransport(int n, String transport) {
 		LinphoneProxyConfig proxyConfig = getProxyConfig(n);

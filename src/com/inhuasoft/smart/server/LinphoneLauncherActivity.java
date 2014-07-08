@@ -75,9 +75,17 @@ public class LinphoneLauncherActivity extends Activity {
 
 	protected void onServiceReady() {
 		final Class<? extends Activity> classToStart;
-		if (getResources().getBoolean(R.bool.show_tutorials_instead_of_app)) {
+		/*if (getResources().getBoolean(R.bool.show_tutorials_instead_of_app)) {
 			classToStart = TutorialLauncherActivity.class;
 		} else {
+			classToStart = LinphoneActivity.class;
+		}*/
+		//zwzhu modify 
+		if(!LinphonePreferences.instance().isReg()||!LinphonePreferences.instance().isLogin())
+		{
+			classToStart = LoginActivity.class;
+		}
+		else {
 			classToStart = LinphoneActivity.class;
 		}
 		
