@@ -86,7 +86,8 @@ public class LinphoneLauncherActivity extends Activity {
 			classToStart = LoginActivity.class;
 		}
 		else {
-			classToStart = LinphoneActivity.class;
+			//classToStart = LinphoneActivity.class;
+			 classToStart = MainActivity.class;
 		}
 		
 		LinphoneService.instance().setActivityToLaunchOnIncomingReceived(classToStart);

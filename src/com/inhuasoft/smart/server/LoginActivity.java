@@ -158,7 +158,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 	 
 	 private void  StartMain() {
 		 SetSystemInfo();
-		 startActivity(new Intent().setClass(LoginActivity.this, LinphoneActivity.class));
+		 startActivity(new Intent().setClass(LoginActivity.this, MainActivity.class));
 		 finish();
 		/* if(mScreenService != null )
 		 {
