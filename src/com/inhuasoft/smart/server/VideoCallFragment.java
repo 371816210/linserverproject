@@ -58,7 +58,7 @@ public class VideoCallFragment extends Fragment implements OnGestureListener, On
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
         Bundle savedInstanceState) {		
-        View view = inflater.inflate(R.layout.video, container, false);
+        View view = inflater.inflate(R.layout.view_call_incall_video, container, false);
         
 		mVideoView = (SurfaceView) view.findViewById(R.id.videoSurface);
 		mCaptureView = (SurfaceView) view.findViewById(R.id.videoCaptureSurface);
