@@ -18,8 +18,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 import org.linphone.core.LinphoneCall;
+import org.linphone.core.LinphoneCore;
 import org.linphone.core.LinphoneCall.State;
 
+import android.R.raw;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -27,21 +29,27 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.Chronometer;
+import android.widget.ImageButton;
 
 /**
  * @author Sylvain Berfini
  */
-public class AudioCallFragment extends Fragment {	
+public class AudioCallFragment extends Fragment implements OnClickListener {	
 	private InCallActivity incallActvityInstance;
+	
+    ImageButton btnHangUp ;
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
         Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.view_call_incall_audio, container, false);
         registerCallDurationTimer(view,LinphoneManager.getLc().getCalls()[0]);
+        btnHangUp = (ImageButton) view.findViewById(R.id.view_call_incall_audio_imageButton_hang);
+        btnHangUp.setOnClickListener(this);
         return view;
     }
 
@@ -127,5 +135,28 @@ public class AudioCallFragment extends Fragment {
 	interface SwipeListener {
 		void onRightToLeftSwipe();
 		void onLeftToRightSwipe();
+	}
+
+	
+	private void hangUp() {
+		LinphoneCore lc = LinphoneManager.getLc();
+		LinphoneCall currentCall = lc.getCurrentCall();
+		
+		if (currentCall != null) {
+			lc.terminateCall(currentCall);
+		} else if (lc.isInConference()) {
+			lc.terminateConference();
+		} else {
+			lc.terminateAllCalls();
+		}
+	}
+	
+	@Override
+	public void onClick(View arg0) {
+		// TODO Auto-generated method stub
+		if(arg0.getId() == R.id.view_call_incall_audio_imageButton_hang)
+		{
+			hangUp();
+		}
 	}
 }
