@@ -17,14 +17,19 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
+import org.linphone.core.LinphoneCall;
+import org.linphone.core.LinphoneCall.State;
+
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.widget.Chronometer;
 
 /**
  * @author Sylvain Berfini
@@ -36,13 +41,34 @@ public class AudioCallFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
         Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.view_call_incall_audio, container, false);
+        registerCallDurationTimer(view,LinphoneManager.getLc().getCalls()[0]);
         return view;
     }
 
+	
+	
+	private void registerCallDurationTimer(View view,LinphoneCall call) {
+		int callDuration = call.getDuration();
+		if (callDuration == 0 && call.getState() != State.StreamsRunning) {
+			return;
+		}
+		
+		Chronometer timer = (Chronometer) view.findViewById(R.id.callTimer_new);
+		if (timer == null) {
+			throw new IllegalArgumentException("no callee_duration view found");
+		}
+		
+		timer.setBase(SystemClock.elapsedRealtime() - 1000 * callDuration);
+		timer.start();
+	}
+	
+	
+	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		incallActvityInstance = (InCallActivity) activity;
+		
 		
 		if (incallActvityInstance != null) {
 			incallActvityInstance.bindAudioFragment(this);
