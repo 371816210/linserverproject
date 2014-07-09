@@ -21,6 +21,7 @@ import com.inhuasoft.smart.server.compatibility.Compatibility;
 import com.inhuasoft.smart.server.compatibility.CompatibilityScaleGestureDetector;
 import com.inhuasoft.smart.server.compatibility.CompatibilityScaleGestureListener;
 import org.linphone.core.LinphoneCall;
+import org.linphone.core.LinphoneCallParams;
 import org.linphone.core.LinphoneCore;
 import org.linphone.mediastream.Log;
 import org.linphone.mediastream.video.AndroidVideoWindowImpl;
@@ -55,7 +56,7 @@ public class VideoCallFragment extends Fragment implements OnGestureListener, On
 	private float mZoomCenterX, mZoomCenterY;
 	private CompatibilityScaleGestureDetector mScaleDetector;
 	private InCallActivity inCallActivity;
-	ImageButton imgbtn_hangup,imgbtn_capture_img;
+	ImageButton imgbtn_hangup,imgbtn_capture_img,imgbtn_record_video;
 	
 	@SuppressWarnings("deprecation") // Warning useless because value is ignored and automatically set by new APIs.
 	@Override
@@ -68,6 +69,8 @@ public class VideoCallFragment extends Fragment implements OnGestureListener, On
         imgbtn_hangup.setOnClickListener(this);
         imgbtn_capture_img = (ImageButton)view.findViewById(R.id.imgbtn_capture_img);
         imgbtn_capture_img.setOnClickListener(this);
+        imgbtn_record_video =(ImageButton) view.findViewById(R.id.imgbtn_record_video);
+        imgbtn_record_video.setOnClickListener(this);
         
 		mVideoView = (SurfaceView) view.findViewById(R.id.videoSurface);
 		mCaptureView = (SurfaceView) view.findViewById(R.id.videoCaptureSurface);
@@ -349,6 +352,28 @@ public class VideoCallFragment extends Fragment implements OnGestureListener, On
 		}
 	}
 	
+	private void startVideoRecord()
+	{
+		LinphoneCore lc = LinphoneManager.getLc();
+		LinphoneCall currentCall = lc.getCurrentCall();
+		if (currentCall != null) {
+			LinphoneCallParams params = currentCall.getCurrentParamsCopy();
+			params.setRecordFile("/mnt/sdcard/1.mp4");
+			//lc.updateCall(currentCall, params);
+			currentCall.startRecording();
+		}
+		
+	}
+	
+	private void stopVideoRecord() {
+		LinphoneCore lc = LinphoneManager.getLc();
+		LinphoneCall currentCall = lc.getCurrentCall();
+		if (currentCall != null) {
+			currentCall.stopRecording();
+		}
+	}
+	
+	private boolean IsRecord = false ; 
 	@Override
 	public void onClick(View arg0) {
 		// TODO Auto-generated method stub
@@ -358,6 +383,20 @@ public class VideoCallFragment extends Fragment implements OnGestureListener, On
 		}
 		else if(arg0.getId() == R.id.imgbtn_capture_img) {
 			takeSnapshot();
+		}
+		else if(arg0.getId() == R.id.imgbtn_record_video)
+		{
+			if(!IsRecord)
+			{
+				imgbtn_record_video.setImageResource(R.drawable.phone_hold_48);
+				startVideoRecord();
+				IsRecord = true ;
+			}
+		    else {
+		    	imgbtn_record_video.setImageResource(R.drawable.phone_resume_48);
+				stopVideoRecord();
+				IsRecord = false ;
+			}
 		}
 	}
 }

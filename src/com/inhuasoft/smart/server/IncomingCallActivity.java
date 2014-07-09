@@ -160,7 +160,7 @@ public class IncomingCallActivity extends Activity implements LinphoneOnCallStat
 	
 	private void answer() {
 		LinphoneCallParams params = LinphoneManager.getLc().createDefaultCallParameters();
-		
+		params.setRecordFile("/mnt/sdcard/1.mp4");
 		boolean isLowBandwidthConnection = !LinphoneUtils.isHightBandwidthConnection(this);
 		if (isLowBandwidthConnection) {
 			params.enableLowBandwidth(true);
