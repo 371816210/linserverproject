@@ -55,7 +55,7 @@ public class VideoCallFragment extends Fragment implements OnGestureListener, On
 	private float mZoomCenterX, mZoomCenterY;
 	private CompatibilityScaleGestureDetector mScaleDetector;
 	private InCallActivity inCallActivity;
-	ImageButton imgbtn_hangup ;
+	ImageButton imgbtn_hangup,imgbtn_capture_img;
 	
 	@SuppressWarnings("deprecation") // Warning useless because value is ignored and automatically set by new APIs.
 	@Override
@@ -66,6 +66,8 @@ public class VideoCallFragment extends Fragment implements OnGestureListener, On
         
         imgbtn_hangup = (ImageButton) view.findViewById(R.id.imgbtn_hang_up);
         imgbtn_hangup.setOnClickListener(this);
+        imgbtn_capture_img = (ImageButton)view.findViewById(R.id.imgbtn_capture_img);
+        imgbtn_capture_img.setOnClickListener(this);
         
 		mVideoView = (SurfaceView) view.findViewById(R.id.videoSurface);
 		mCaptureView = (SurfaceView) view.findViewById(R.id.videoCaptureSurface);
@@ -338,12 +340,24 @@ public class VideoCallFragment extends Fragment implements OnGestureListener, On
 		}
 	}
 	
+	
+	private void takeSnapshot() {
+		LinphoneCore lc = LinphoneManager.getLc();
+		LinphoneCall currentCall = lc.getCurrentCall();
+		if (currentCall != null) {
+			currentCall.takeSnapshot("/mnt/sdcard/1.jpg");
+		}
+	}
+	
 	@Override
 	public void onClick(View arg0) {
 		// TODO Auto-generated method stub
 		if(arg0.getId() == R.id.imgbtn_hang_up)
 		{
 			hangUp();
+		}
+		else if(arg0.getId() == R.id.imgbtn_capture_img) {
+			takeSnapshot();
 		}
 	}
 }
