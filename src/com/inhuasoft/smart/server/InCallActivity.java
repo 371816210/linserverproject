@@ -731,7 +731,7 @@ public class InCallActivity extends FragmentActivity implements
 		mControls = null;
 		
 		//mControlsLayout.setVisibility(View.VISIBLE);
-		callsList.setVisibility(View.VISIBLE);
+		//callsList.setVisibility(View.VISIBLE);
 		//switchCamera.setVisibility(View.INVISIBLE);
 	}
 	
