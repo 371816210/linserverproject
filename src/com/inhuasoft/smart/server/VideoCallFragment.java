@@ -325,9 +325,25 @@ public class VideoCallFragment extends Fragment implements OnGestureListener, On
 		return false;
 	}
 
+	private void hangUp() {
+		LinphoneCore lc = LinphoneManager.getLc();
+		LinphoneCall currentCall = lc.getCurrentCall();
+		
+		if (currentCall != null) {
+			lc.terminateCall(currentCall);
+		} else if (lc.isInConference()) {
+			lc.terminateConference();
+		} else {
+			lc.terminateAllCalls();
+		}
+	}
+	
 	@Override
 	public void onClick(View arg0) {
 		// TODO Auto-generated method stub
-		
+		if(arg0.getId() == R.id.imgbtn_hang_up)
+		{
+			hangUp();
+		}
 	}
 }
