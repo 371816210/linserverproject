@@ -35,7 +35,7 @@ public class AudioCallFragment extends Fragment {
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, 
         Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.audio, container, false);
+        View view = inflater.inflate(R.layout.view_call_incall_audio, container, false);
         return view;
     }
 
