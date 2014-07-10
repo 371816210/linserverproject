@@ -152,7 +152,10 @@ public class LoginActivity extends Activity implements OnClickListener {
 				Log.e(TAG, "Failed to Commit() configuration");
 			}
 		 */
-		 LinphonePreferences.instance().CreatedAccount(getDeviceNo(),getDeviceNo(),"115.28.9.71");
+		 if(LinphonePreferences.instance().getAccountCount() < 1)
+		 {
+		   LinphonePreferences.instance().CreatedAccount(getDeviceNo(),getDeviceNo(),"115.28.9.71");
+		 }
 		 
 	}
 	 
