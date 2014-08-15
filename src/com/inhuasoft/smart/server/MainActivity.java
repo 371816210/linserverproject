@@ -30,6 +30,7 @@ import org.linphone.core.LinphoneCore;
 import org.linphone.core.LinphoneCall.State;
 import org.linphone.mediastream.Log;
 
+import com.inhuasoft.smart.server.LinphonePreferences;
 import com.inhuasoft.smart.server.LinphoneSimpleListener.LinphoneOnCallStateChangedListener;
 
 import android.app.Activity;
@@ -61,6 +62,7 @@ public class MainActivity extends Activity implements LinphoneOnCallStateChanged
 	private int mAlwaysChangingPhoneAngle = -1;
 	
 	private static MainActivity instance;
+	private TextView txtWelcome ;
 	
 
 	
@@ -78,6 +80,8 @@ public class MainActivity extends Activity implements LinphoneOnCallStateChanged
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_new);
+		txtWelcome =(TextView)findViewById(R.id.txtWelcome);
+		txtWelcome.setText("welcome, "+LinphonePreferences.instance().getUserName());
 		
 		int rotation = getWindowManager().getDefaultDisplay().getRotation();
 		switch (rotation) {

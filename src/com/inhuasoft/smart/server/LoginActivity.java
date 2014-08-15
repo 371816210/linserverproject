@@ -398,6 +398,9 @@ public class LoginActivity extends Activity implements OnClickListener {
 				break;
 			case Bind_User_Device_Success:
 				//SetSystemInfo();
+				LinphonePreferences.instance().setReg(true);
+				LinphonePreferences.instance().setUserSip("sip:"+editUserName.getText().toString()+"@115.28.9.71");
+				LinphonePreferences.instance().setUserName(editUserName.getText().toString());
 				StartMain();
 				break;
 			case Bind_User_Device_Fail:
@@ -1165,6 +1168,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 					if (username != null) {
 						LinphonePreferences.instance().setReg(true);
 						LinphonePreferences.instance().setUserSip("sip:"+username+"@115.28.9.71");
+						LinphonePreferences.instance().setUserName(username);
 						if(!LinphonePreferences.instance().isLogin())
 						{
 							//SetLoginUI();

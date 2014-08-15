@@ -120,6 +120,16 @@ public class LinphonePreferences {
 	public void setUserSip(String usersip) {
 		 getConfig().setString("app", "usersip", usersip);
 	}
+	
+	public String getUserName() {
+		 return getConfig().getString("app", "username", "");
+	}
+	
+	public void setUserName(String username) {
+		 getConfig().setString("app", "username", username);
+	}
+	
+	
 	//zwzhu add end 
 	
 	public void setRingtone(String ringtonePath) {
